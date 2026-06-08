@@ -15,3 +15,6 @@ TODO
   - survival
   - km stuff
 
+here::i_am("scripts/analysis-stats.Rmd")
+source(here("scripts/wrangle.R"))
+source(here("scripts/R/tidy.R"))

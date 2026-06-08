@@ -15,9 +15,9 @@ final code is purled to a `.R` script, rerun `purl` step as needed to update the
   - make new columns, binaries, etc
   - cleanup
 ```{r for purling, eval=FALSE, include=FALSE, purl=FALSE}
-here::i_am("_tdt/scripts/tidy.Rmd") # set wd
+here::i_am("scripts/tidy.Rmd") # set wd
 
-knitr::purl(here::here("_tdt/scripts/tidy.Rmd"), here::here("_tdt/scripts/R/tidy.R")) # purl current script
+knitr::purl(here::here("scripts/tidy.Rmd"), here::here("scripts/R/tidy.R")) # purl current script
   # save and apply updates to current .Rmd before purling!
 ```
 
@@ -40,9 +40,9 @@ library(here)
 # drop bugs with unknown fates (i.e. got lost)
 # separate cohort A expt bugs from the rest bc they had 48h initial exposure
 dfs_import <- list(
-  all = read.csv(here("_tdt/data/clean/dev.csv"), header = TRUE),
-  # cohortA = read.csv(here("_tdt/data/clean/dev.csv"), header = TRUE) %>% filter(cohort == "A"),
-  noA = read.csv(here("_tdt/data/clean/dev.csv"), header = TRUE) %>% filter(!(cohort == "A" & trt.duration > 0))
+  all = read.csv(here("data/clean/dev.csv"), header = TRUE),
+  # cohortA = read.csv(here("data/clean/dev.csv"), header = TRUE) %>% filter(cohort == "A"),
+  noA = read.csv(here("data/clean/dev.csv"), header = TRUE) %>% filter(!(cohort == "A" & trt.duration > 0))
   ) %>%
   lapply(., \(x){
     filter(x, !is.na(fate))

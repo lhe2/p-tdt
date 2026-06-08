@@ -17,7 +17,7 @@ generate tdt viz
 
 ```{r message=FALSE}
 # pathfinding
-here::i_am("_tdt/scripts/analysis-viz.Rmd")
+here::i_am("scripts/analysis-viz.Rmd")
 library(here)
 
 # libs and utils
@@ -25,13 +25,13 @@ library(tidyverse)
 library(survival) # for Surv 
 library(survminer) # for ggsurvplot
 
-source(here("_tdt/scripts/wrangle.R"))
-source(here("_tdt/scripts/analysis-viz_utils.R"))
+source(here("scripts/wrangle.R"))
+source(here("scripts/analysis-viz_utils.R"))
 ```
 
 ```{r data prep, message=FALSE}
 # import data
-source(here("_tdt/scripts/R/tidy.R"))
+source(here("scripts/R/tidy.R"))
 
 # format col types for easier plotting...?
 

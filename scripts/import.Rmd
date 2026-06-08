@@ -35,7 +35,7 @@ library(tidyverse)
 library(lubridate) # for datetime parsing
 library(googlesheets4)
 
-here::i_am("_tdt/scripts/import.Rmd")
+here::i_am("scripts/import.Rmd")
 library(here)
 ```
 
@@ -258,14 +258,14 @@ df_cleaned <- df_filtered %>%
 today <- format(Sys.time(), "%y%m%d-%H%M")
 
 # export filtered df as raw per corrections
-write.csv(df_filtered, file = paste0(here("_tdt/data/raw/"), "dev_", today, ".csv"), row.names = FALSE)
+write.csv(df_filtered, file = paste0(here("data/raw/"), "dev_", today, ".csv"), row.names = FALSE)
 
 # extract useful stuff
 df_cleaned %>%
   select(c("cohort", "shelf", "id", starts_with(c("trt", "jdate", "mass", "dh.")), "fate"),
          -c(ends_with(c("culled", "died", "pmd", "pmc")),
             starts_with("time"))) %>%
-  write.csv(., file = paste0(here("_tdt/data/clean/dev.csv")), row.names = FALSE)
+  write.csv(., file = paste0(here("data/clean/dev.csv")), row.names = FALSE)
 ```
 
 ```{r}
