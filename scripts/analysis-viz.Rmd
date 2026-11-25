@@ -367,11 +367,14 @@ dfs$all %>%
   aes(lty = trt.duration, shape = trt.duration, color = trt.duration,
       group = trt.duration) +
   facet_wrap(~ grp, labeller = as_labeller(c(`A` = "cohort A (48h)", 
-                                             `B+C` = "cohort B + C (24h)"))) +
+                                              `B+C` = "cohort B + C (24h)"))
+             ) +
   labs(lty = "recovery\nduration (h)",
        shape = "recovery\nduration (h)",
        color = "recovery\nduration (h)",
        caption = "from entering;\n(initial hours exposure to 40C before recovering)")
+
+  
 ```
 
 #### from return
@@ -387,7 +390,7 @@ dfs$all %>%
                   width = 0.25, lty = "solid") +
     labs(y = "time to death (h)",
          x = "recovery temperature (°C)",
-         caption = "cohort B+C; from return",
+         #caption = "cohort B+C; from return",
          lty = "recovery\nduration (h)",
          shape = "recovery\nduration (h)",
          color = "recovery\nduration (h)"
@@ -416,12 +419,16 @@ dfs$noA %>%
 
 ## facet by grp
 dfs$all %>%
+  mutate(grp = factor(grp, levels = c("B+C", "A"))) %>%
   .plotfn() +
   aes(lty = trt.duration, shape = trt.duration, color = trt.duration,
       group = trt.duration) +
-  facet_wrap(~ grp, labeller = as_labeller(c(`A` = "cohort A (48h)", 
-                                             `B+C` = "cohort B + C (24h)"))) +
-  labs(caption = "from return;\n(initial hours exposure to 40C before recovering)")
+    facet_wrap(~ grp,
+             labeller = as_labeller(c(`A` = "48h initial exposure",
+                                      `B+C` = "24h initial exposure"))) #+
+  # facet_wrap(~ grp, labeller = as_labeller(c(`A` = "cohort A (48h)", 
+  #                                            `B+C` = "cohort B + C (24h)"))) #+
+ # labs(caption = "from return;\n(initial hours exposure to 40C before recovering)")
 ```
 
 ### exposure time vs rec temp
@@ -864,15 +871,26 @@ list(
                                                     "48h", "72h", "96h", "> 96h"))) %>%
   ggplot(aes(x = trt.recover, fill = stage.died)) +
   geom_bar(position = "fill") +
-  facet_grid(grp ~ trt.duration, # NOTE prob should be trt.exposure ~ trt.duration but its wonky
+  # facet_grid(grp ~ trt.duration, # NOTE prob should be trt.exposure ~ trt.duration but its wonky
+  #            #trt.exposure ~ trt.duration,
+  #            drop = TRUE, scales = "free_x", space = "free",
+  #            labeller = labeller(trt.duration = c(`0` = "0h recovery",
+  #                                                 `24` = "initial HS + 24h recovery",
+  #                                                 `48` = "initial HS + 48h recovery"),
+  #                                grp = c(`A` = "48h initial HS",
+  #                                        `B+C` = "24h initial HS"),
+  #                                )) +
+  ## change these
+    facet_grid(grp ~ trt.duration, # NOTE prob should be trt.exposure ~ trt.duration but its wonky
              #trt.exposure ~ trt.duration,
-             drop = TRUE, scales = "free_x", space = "free",
+             drop = TRUE, scales = "free", space = "free",
              labeller = labeller(trt.duration = c(`0` = "0h recovery",
-                                                  `24` = "initial HS + 24h recovery",
-                                                  `48` = "initial HS + 48h recovery"),
-                                 grp = c(`A` = "48h initial HS",
-                                         `B+C` = "24h initial HS"),
+                                                  `24` = "24h recovery",
+                                                  `48` = "48h recovery"),
+                                 grp = c(`A` = "48h initial HS (A)",
+                                         `B+C` = "24h initial HS (B+C)"),
                                  )) +
+  
   scale_fill_manual(breaks = c("24h", "48h", "rec 24h", "rec 48h", "72h", "96h", "> 96h"),
                     values = c("24h" = "#FED976", "48h*" = "#FEB24C", "48h" = "#FEB24C", 
                                "rec 24h" = "#9ECAE1", "rec 48h" = "#6BAED6",
@@ -884,7 +902,8 @@ list(
        y = "proportion",
        x = "recovery temp (°C)",
        title = "survival at 40C (hrs)",
-       caption = "*24h or **48h initial HS before recovery") +
+       #caption = "*24h or **48h initial HS before recovery"
+       ) +
   theme_bw()
 ```
 
